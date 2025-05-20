@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "tailwind: watch",
+            "type": "shell",
+            "command": "bunx tailwindcss -i ./assets/main.css -o ./public/index.css --watch",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "custom",
+                "pattern": {
+                    "regexp": "^$"
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "tailwindcss",
+                    "endsPattern": "Done in *"
+                }
+            }
+        }
+    ]
+}
