@@ -1,0 +1,28 @@
+services:
+  emqx:
+    container_name: emqx
+    ports:
+      - 1883:1883
+      - 8083:8083
+      - 8084:8084
+      - 8883:8883
+      - 18083:18083
+    volumes:
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
+    image: emqx/emqx:5.8.4
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+
+volumes:
+  emqx_data: null
+  emqx_log: null
