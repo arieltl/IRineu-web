@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { DevicesPage } from "./pages/devices.page";
 import { AddDevicePage } from "./pages/addDevice.page";
 import { SimpleDevicePage } from "./pages/simpleDevice.page";
-import { getDevices, addDevice } from "./devices.service";
+import { getDevices, addDevice, deleteDevice } from "./devices.service";
 import { getRemotes } from "../remotes/remotes.service";
 import { getCommandsByDeviceId } from "../commands/commands.service";
 
@@ -77,6 +77,21 @@ app.post('/devices/add', async (c) => {
     console.error('Error adding device:', error);
     return c.text('Error adding device', 500);
   }
-  })
+})
+
+// Delete device
+app.delete('/devices/:id', async (c) => {
+  try {
+    const deviceId = parseInt(c.req.param('id'));
+    
+    await deleteDevice(deviceId);
+    
+    // Return success response for HTMX
+    return c.text('Device deleted successfully');
+  } catch (error) {
+    console.error('Error deleting device:', error);
+    return c.text('Error deleting device', 500);
+  }
+})
 
 export default app

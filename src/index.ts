@@ -5,7 +5,10 @@ import { Layout } from './layout'
 import { serveStatic } from 'hono/bun'
 import devicePages from './devices/devices.pages'
 import learningPages from './learning/learning.pages'
+import acPages from './ac/ac.pages'
 import { HxRenderer } from './renderer'
+// Import AC learning service to initialize MQTT listeners
+import './ac/acLearning.service'
 
 const app = new Hono()
 app.use("/public/*", serveStatic({ root: "./" }))
@@ -22,4 +25,5 @@ app.get('/', (c) => {
 app.route('/', remotePages)
 app.route('/', devicePages)
 app.route('/', learningPages)
+app.route('/', acPages)
 export default app

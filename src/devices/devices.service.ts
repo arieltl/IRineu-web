@@ -1,5 +1,7 @@
 import { db } from '../db';
 import { devicesTable, type NewDevice } from '../schema';
+import { eq } from 'drizzle-orm';
+import { deleteAcDevice } from '../ac/ac.service';
 
 export const getDevices = async () => {
     try {
@@ -117,6 +119,30 @@ export const addDevice = async (deviceData: NewDevice) => {
         return newDevice;
     } catch (error) {
         console.error('Error adding device:', error);
+        throw error;
+    }
+};
+
+export const deleteDevice = async (deviceId: number) => {
+    try {
+        // Get device to check type
+        const [device] = await db.select().from(devicesTable).where(eq(devicesTable.id, deviceId));
+        
+        if (!device) {
+            throw new Error('Device not found');
+        }
+        
+        // If it's an AC device, delete AC-related data first
+        if (device.type === 'AC') {
+            await deleteAcDevice(deviceId);
+        }
+        
+        // Delete the device itself
+        await db.delete(devicesTable).where(eq(devicesTable.id, deviceId));
+        
+        return device;
+    } catch (error) {
+        console.error('Error deleting device:', error);
         throw error;
     }
 }; 
