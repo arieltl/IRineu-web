@@ -2,7 +2,7 @@ import mqtt, { MqttClient } from 'mqtt';
 
 
 const mqttClient = mqtt.connect({
-    host: "192.168.15.10",
+    host: "167.234.242.168",
     port: 1883,
     username: "test",
     password: "test"

@@ -61,17 +61,22 @@ app.post('/devices/:id/add-command', async (c) => {
 app.get('/devices/:id/learning-status', async (c) => {
     try {
         const deviceId = parseInt(c.req.param('id'));
+        console.log(`[LEARNING STATUS] Checking status for device: ${deviceId}`);
         
         // Get device info
         const devices = await getDevices();
         const device = devices.find(d => d.id === deviceId);
         
         if (!device) {
+            console.log(`[LEARNING STATUS] Device not found: ${deviceId}`);
             return c.text('Device not found', 404);
         }
 
+        console.log(`[LEARNING STATUS] Device found: ${device.name}`);
+
         // Check if there's an active learning session
-        const session = getSession(deviceId);
+        const session = await getSession(deviceId);
+        console.log(`[LEARNING STATUS] Session found:`, session);
         
         if (session) {
             // Check if session is marked as completed
@@ -101,6 +106,7 @@ app.get('/devices/:id/learning-status', async (c) => {
             }
         } else {
             // No active session - redirect back to device page
+            console.log(`[LEARNING STATUS] No session found, redirecting to device page`);
             return c.redirect(`/devices/${deviceId}/simple`);
         }
 

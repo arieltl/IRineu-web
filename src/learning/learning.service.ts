@@ -15,8 +15,10 @@ export const getCommandById = async (commandId: number) => {
 
 const learningSessions = new Map<number,any>()
 
-export const getSession = (deviceId: number) => {
-    return learningSessions.get(deviceId);
+export const getSession = async (deviceId: number) => {
+    // Need to find the session by deviceId since sessions are stored by remote.id
+    const sessions = Array.from(learningSessions.values());
+    return sessions.find(session => session.deviceId === deviceId);
 }
 
 export const clearSession = (deviceId: number) => {
