@@ -26,4 +26,10 @@ app.route('/', remotePages)
 app.route('/', devicePages)
 app.route('/', learningPages)
 app.route('/', acPages)
-export default app
+
+// Start server on 0.0.0.0 to allow external access
+export default {
+  port: process.env.PORT || 3000,
+  hostname: '0.0.0.0',
+  fetch: app.fetch,
+}
